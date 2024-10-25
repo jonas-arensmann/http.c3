@@ -1,0 +1,22 @@
+name: test
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: setup c3c
+        uses: supplypike/setup-bin@v4.0.1
+        with:
+          uri: 'https://github.com/c3lang/c3c/releases/download/v0.6.3/c3-linux.tar.gz'
+          name: 'c3-linux.tar.gz'
+          version: "0.6.3"
+          command: 'sh -c "cp -r c3/ /root/ && chmod +x /root/c3/c3c"'
+
+      - name: Test app
+        run: sh -c "/root/c3/c3c --stdlib /root/c3/lib/ test"
