@@ -18,7 +18,7 @@ struct HttpServerRequest
 
 struct HttpServerResponse
 {
-    uint status;
+    http::HttpStatus status;
     utils::KeyValuePairList headers;
     String body;
 }
@@ -157,7 +157,7 @@ fn void! listen(String host, uint port, ListenCallback callback) @public
             DString res = dstring::new();
             defer res.free();
 	        res.reserve(2048);
-	        res.appendfn("HTTP/1.1 %d OK", response.status);
+	        res.appendfn("HTTP/1.1 %d %s", response.status.code, http::get_status_message(response.status));
 
             create_default_server_headers(&response);
 

@@ -38,16 +38,15 @@ The `HttpServerResponse` object represents the HTTP response that will be sent t
 import std::io;
 import http::server;
 
-fn server::HttpServerResponse handle_request(server::HttpServerRequest request)
+fn server::HttpServerResponse callback(server::HttpServerRequest request)
 {
-    String res = string::format("%s %s %s", request.method, request.path, request.queries, .allocator = allocator::temp());
-
-    // Status Code | Headers | ResponseBody
-    return {200, {}, res};
+    // Status, Headers, Body
+    server::HttpServerResponse response = {http::HttpStatus.OK, {}, "Hello World!"};
+    return response;
 }
 
 fn void main() 
 {
-    server::listen("0.0.0.0", 8080, &handle_request)!!;
+    server::listen("0.0.0.0", 8080, &callback)!!;
 }
 ```
